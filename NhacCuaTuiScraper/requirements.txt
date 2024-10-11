@@ -1,0 +1,4 @@
+scrapy
+scrapy-splash
+mysql-connector-python
+boto3
