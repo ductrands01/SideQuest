@@ -6,16 +6,12 @@
 import scrapy
 
 
-class SongsscraperItem(scrapy.Item):
+class NhaccuatuiItem(scrapy.Item):
     category_name = scrapy.Field()
     category_url = scrapy.Field()
-    title = scrapy.Field()
     song_url = scrapy.Field()
-    author = scrapy.Field()
+    title = scrapy.Field()
+    authors = scrapy.Field()
     duration = scrapy.Field()
     lyrics = scrapy.Field()
-    tags = scrapy.Field()
-    poster = scrapy.Field()
-    image = scrapy.Field()
-    audio_url = scrapy.Field()
 
