@@ -1,74 +1,15 @@
-appdirs @ file:///home/conda/feedstock_root/build_artifacts/appdirs_1603108395799/work
-attrs @ file:///home/conda/feedstock_root/build_artifacts/attrs_1722977137225/work
-Automat @ file:///home/conda/feedstock_root/build_artifacts/automat_1724116770503/work
-bcrypt @ file:///home/conda/feedstock_root/build_artifacts/bcrypt_1724960424324/work
-boto3==1.35.38
-botocore==1.35.38
-Brotli @ file:///home/conda/feedstock_root/build_artifacts/brotli-split_1725267488082/work
-cachetools==5.5.0
-certifi @ file:///home/conda/feedstock_root/build_artifacts/certifi_1725278078093/work/certifi
-cffi @ file:///home/conda/feedstock_root/build_artifacts/cffi_1725560558132/work
-charset-normalizer @ file:///home/conda/feedstock_root/build_artifacts/charset-normalizer_1698833585322/work
-constantly==15.1.0
-cryptography @ file:///home/conda/feedstock_root/build_artifacts/cryptography-split_1725443043785/work
-cssselect @ file:///home/conda/feedstock_root/build_artifacts/cssselect_1666980406338/work
-defusedxml @ file:///home/conda/feedstock_root/build_artifacts/defusedxml_1615232257335/work
-filelock @ file:///home/conda/feedstock_root/build_artifacts/filelock_1726613473834/work
+scrapy==2.8.0
+
+PyMySQL==1.1.1
+mysql-connector-python==9.0.0
+
 google-api-core==2.21.0
 google-api-python-client==2.149.0
 google-auth==2.35.0
 google-auth-httplib2==0.2.0
 google-auth-oauthlib==1.2.1
-googleapis-common-protos==1.65.0
-greenlet==3.0.3
-h2 @ file:///home/conda/feedstock_root/build_artifacts/h2_1634280454336/work
-hpack==4.0.0
-httplib2==0.22.0
-hyperframe @ file:///home/conda/feedstock_root/build_artifacts/hyperframe_1619110129307/work
-hyperlink @ file:///home/conda/feedstock_root/build_artifacts/hyperlink_1610092164190/work
-idna @ file:///home/conda/feedstock_root/build_artifacts/idna_1726459485162/work
-incremental @ file:///home/conda/feedstock_root/build_artifacts/incremental_1722304162160/work
-itemadapter @ file:///home/conda/feedstock_root/build_artifacts/itemadapter_1715111453050/work
-itemloaders @ file:///home/conda/feedstock_root/build_artifacts/itemloaders_1727723151013/work
-jmespath @ file:///home/conda/feedstock_root/build_artifacts/jmespath_1655568249366/work
-lxml @ file:///home/conda/feedstock_root/build_artifacts/lxml_1725442062792/work
-mysql-connector-python==9.0.0
 oauthlib==3.2.2
-packaging @ file:///home/conda/feedstock_root/build_artifacts/packaging_1718189413536/work
-parsel @ file:///home/conda/feedstock_root/build_artifacts/parsel_1714637952682/work
-playwright==1.47.0
-Protego @ file:///home/conda/feedstock_root/build_artifacts/protego_1712316608681/work
-proto-plus==1.24.0
-protobuf==5.28.2
-pyasn1 @ file:///home/conda/feedstock_root/build_artifacts/pyasn1_1726839225972/work
-pyasn1_modules @ file:///home/conda/feedstock_root/build_artifacts/pyasn1-modules_1726029546107/work
-pycparser @ file:///home/conda/feedstock_root/build_artifacts/pycparser_1711811537435/work
-PyDispatcher==2.0.5
-pyee==12.0.0
-PyMySQL==1.1.1
-pyOpenSSL @ file:///home/conda/feedstock_root/build_artifacts/pyopenssl_1722587090966/work
-pyparsing==3.1.4
-PySocks @ file:///home/conda/feedstock_root/build_artifacts/pysocks_1661604839144/work
-python-dateutil==2.9.0.post0
+
 python-dotenv==1.0.1
-queuelib @ file:///home/conda/feedstock_root/build_artifacts/queuelib_1714989370868/work
-requests @ file:///home/conda/feedstock_root/build_artifacts/requests_1717057054362/work
-requests-file @ file:///home/conda/feedstock_root/build_artifacts/requests-file_1716356557602/work
-requests-oauthlib==2.0.0
-rsa==4.9
-s3transfer==0.10.3
-Scrapy @ file:///home/conda/feedstock_root/build_artifacts/scrapy_1715855477922/work
-scrapy-playwright==0.0.41
-scrapy-splash==0.9.0
-service-identity @ file:///home/conda/feedstock_root/build_artifacts/service-identity_1723586238340/work
-setuptools==75.1.0
-six @ file:///home/conda/feedstock_root/build_artifacts/six_1620240208055/work
-tldextract @ file:///home/conda/feedstock_root/build_artifacts/tldextract_1710828352964/work
-Twisted @ file:///home/conda/feedstock_root/build_artifacts/twisted_1723317723812/work
-typing_extensions @ file:///home/conda/feedstock_root/build_artifacts/typing_extensions_1717802530399/work
-uritemplate==4.1.1
-urllib3 @ file:///home/conda/feedstock_root/build_artifacts/urllib3_1726496430923/work
-w3lib @ file:///home/conda/feedstock_root/build_artifacts/w3lib_1718193888625/work
-wheel==0.44.0
-zope.interface @ file:///home/conda/feedstock_root/build_artifacts/zope.interface_1724956581249/work
-zstandard==0.23.0
+cachetools==5.5.0
+requests==2.31.0
