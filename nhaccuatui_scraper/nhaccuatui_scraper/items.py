@@ -12,6 +12,7 @@ class NhaccuatuiItem(scrapy.Item):
     song_url = scrapy.Field()
     title = scrapy.Field()
     authors = scrapy.Field()
-    duration = scrapy.Field()
     lyrics = scrapy.Field()
+    poster = scrapy.Field()
+    poster_url = scrapy.Field()
 

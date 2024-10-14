@@ -16,6 +16,7 @@ services:
     volumes:
       - .:/app
       - ./credentials:/app/credentials
+      - ./logs:/app/logs
     env_file:
       - .env
     tty: true
