@@ -1,16 +1,25 @@
 import scrapy
 from ..items import NhaccuatuiItem
+from scrapy.utils.project import get_project_settings  # To access settings
 
 class NhaccuatuiSpider(scrapy.Spider):
     name = 'nhaccuatui'
-    start_urls = ['https://www.nhaccuatui.com/bai-hat/bai-hat-moi.html']
+    start_urls = [
+        'https://www.nhaccuatui.com/playlist/nhac-han-moi.html',
+    ]
+
+    def __init__(self, *args, **kwargs):
+        super(NhaccuatuiSpider, self).__init__(*args, **kwargs)
+        settings = get_project_settings()
+        self.limit = settings.get('NEXT_PAGE_LIMIT', 3)  # Default to 3 if not set
 
     def parse(self, response):
         category_urls = response.xpath('//ul[@class="detail_menu_browsing_dashboard"]/li/a/@href').getall()
         for category_url in category_urls:
-            yield scrapy.Request(category_url, callback=self.parse_category, errback=self.handle_error)
+            yield scrapy.Request(category_url, callback=self.parse_category, errback=self.handle_error, meta={'page_count': 1})
 
     def parse_category(self, response):
+        # Extract song URLs
         song_urls = response.xpath('//div[@class="box-content-music-list"]//div[@class="info_song"]//a[@class="name_song"]/@href').getall()
         for song_url in song_urls:
             yield scrapy.Request(song_url, callback=self.parse_song, meta={
@@ -18,11 +27,23 @@ class NhaccuatuiSpider(scrapy.Spider):
                 'category_url': response.url
             }, errback=self.handle_error)
 
-        next_page = response.xpath('//a[@rel="next"]/@href').get()
-        if next_page:
-            yield scrapy.Request(next_page, callback=self.parse_category, errback=self.handle_error)
+        # Get current page count
+        page_count = response.meta['page_count']
+
+        # Only follow next_page if page_count is less than the limit
+        if page_count < self.limit:
+            next_page = response.xpath('//a[@rel="next"]/@href').get()
+            if next_page:
+                yield scrapy.Request(
+                    next_page,
+                    callback=self.parse_category,
+                    errback=self.handle_error,
+                    meta={'page_count': page_count + 1}
+                )
 
     def parse_song(self, response):
+        # print("Processing song from category:", response.meta['category_name'])
+        # print("Song URL:", response.url)
         songitem = NhaccuatuiItem()
         songitem['category_name'] = response.meta['category_name']
         songitem['category_url'] = response.meta['category_url']

@@ -203,6 +203,8 @@ def process_request(self, request, spider):
 
 
 import base64
+from urllib.parse import urlencode
+from scrapy import Request
 
 class ScrapeOpsProxyMiddleware:
 
@@ -211,48 +213,20 @@ class ScrapeOpsProxyMiddleware:
         return cls(crawler.settings)
 
     def __init__(self, settings):
-        self.user = settings.get('PROXY_USER')
-        self.password = settings.get('PROXY_PASSWORD')
-        self.endpoint = settings.get('PROXY_ENDPOINT')
-        self.port = settings.get('PROXY_PORT')
+        self.scrapeops_api_key = settings.get('SCRAPEOPS_API_KEY')
+        self.scrapeops_endpoint = settings.get('SCRAPEOPS_PROXY_ENDPOINT', 'https://proxy.scrapeops.io/v1/?')
+        self.scrapeops_proxy_active = settings.get('SCRAPEOPS_PROXY_ENABLED', False)
+
+
+    def _get_scrapeops_url(self, request):
+        payload = {'api_key': self.scrapeops_api_key, 'url': request.url}
+        return self.scrapeops_endpoint + urlencode(payload)
+
+    def _scrapeops_proxy_enabled(self):
+        return bool(self.scrapeops_api_key) and self.scrapeops_proxy_active
 
     def process_request(self, request, spider):
-        """
-        Adds ScrapeOps proxy authentication to the request.
-        """
-        user_credentials = f'{self.user}:{self.password}'
-        basic_authentication = 'Basic ' + base64.b64encode(user_credentials.encode()).decode()
-        proxy_url = f'http://{self.endpoint}:{self.port}'
-        request.meta['proxy'] = proxy_url
-        request.headers['Proxy-Authorization'] = basic_authentication
+        if self.scrapeops_proxy_active:
+            scrapeops_url = self._get_scrapeops_url(request)
+            request = request.replace(cls=Request, url=scrapeops_url, meta=request.meta)
 
-
-from scrapy import signals
-from google.oauth2 import service_account
-from googleapiclient.discovery import build, MediaFileUpload
-
-class GoogleDriveUploadMiddleware:
-
-    @classmethod
-    def from_crawler(cls, crawler):
-        return cls(crawler.settings)
-
-    def __init__(self, settings):
-        self.credentials_path = settings.get('GOOGLE_API_CREDENTIALS_FILE')
-        self.credentials = service_account.Credentials.from_service_account_file(self.credentials_path)
-        self.output_file_path = settings.get('OUTPUT_FILE_PATH')
-        self.upload_file_name = settings.get('UPLOAD_FILE_NAME')
-
-    def spider_closed(self, spider):
-        spider.logger.info("Uploading results to Google Drive...")
-
-        # Google Drive service setup
-        service = build('drive', 'v3', credentials=self.credentials)
-        file_metadata = {'name': self.upload_file_name, 'mimeType': 'application/json' if self.output_file_path.endswith('.json') else 'text/csv'}
-        media = MediaFileUpload(self.output_file_path, mimetype=file_metadata['mimeType'])
-
-        try:
-            file = service.files().create(body=file_metadata, media_body=media, fields='id').execute()
-            spider.logger.info(f"File uploaded to Google Drive with ID: {file.get('id')}")
-        except Exception as e:
-            spider.logger.error(f"Failed to upload file to Google Drive: {e}")

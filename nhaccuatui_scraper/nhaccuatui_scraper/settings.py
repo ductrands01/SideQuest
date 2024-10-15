@@ -6,26 +6,32 @@
 #     https://docs.scrapy.org/en/latest/topics/settings.html
 #     https://docs.scrapy.org/en/latest/topics/downloader-middleware.html
 #     https://docs.scrapy.org/en/latest/topics/spider-middleware.html
+from scrapy.settings.default_settings import DOWNLOAD_TIMEOUT
 
 BOT_NAME = "nhaccuatui_scraper"
 
 SPIDER_MODULES = ["nhaccuatui_scraper.spiders"]
 NEWSPIDER_MODULE = "nhaccuatui_scraper.spiders"
 
+FEEDS = {
+    'data/songs1.csv': {
+        'format': 'csv',
+        'encoding': 'utf8',
+        'store_empty': False,
+        'fields': None,
+        'overwrite': False,
+        'item_export_kwargs': {
+            'export_empty_fields': False,
+        },
+    }
+}
 
-# File output settings
-OUTPUT_FILE_FORMAT = "csv"
-OUTPUT_FILE_PATH = f'data/songs.{OUTPUT_FILE_FORMAT}'  # Local output file path based on format
-
-# Scrapy feed export settings
-FEED_FORMAT = OUTPUT_FILE_FORMAT
-FEED_URI = OUTPUT_FILE_PATH
 
 import os
 from dotenv import load_dotenv
 load_dotenv()
 
-# CLOSESPIDER_ITEMCOUNT = 5
+CLOSESPIDER_ITEMCOUNT = 100
 
 # MYSQL_SERVER
 MYSQL_HOST = os.getenv('MYSQL_HOST')
@@ -33,40 +39,30 @@ MYSQL_DATABASE = os.getenv('MYSQL_DATABASE')
 MYSQL_USER = os.getenv('MYSQL_USER')
 MYSQL_PASSWORD = os.getenv('MYSQL_PASSWORD')
 
-
 # SCRAPEOPS
 SCRAPEOPS_API_KEY = os.getenv('SCRAPEOPS_API_KEY')
 SCRAPEOPS_FAKE_USER_AGENT_ENDPOINT = 'http://headers.scrapeops.io/v1/user-agents'
 SCRAPEOPS_FAKE_BROWSER_HEADER_ENDPOINT = 'http://headers.scrapeops.io/v1/browser-headers'
-SCRAPEOPS_FAKE_USER_AGENT_ENABLED = False
-SCRAPEOPS_FAKE_BROWSER_HEADER_ENABLED = False
+SCRAPEOPS_PROXY_ENDPOINT = 'https://proxy.scrapeops.io/v1/?'
+SCRAPEOPS_FAKE_USER_AGENT_ENABLED = True
+SCRAPEOPS_FAKE_BROWSER_HEADER_ENABLED = True
+SCRAPEOPS_PROXY_ENABLED = True
 SCRAPEOPS_NUM_RESULTS = 5
 
-PROXY_USER = os.getenv('PROXY_USER')
-PROXY_PASSWORD = os.getenv('PROXY_PASSWORD')
-PROXY_ENDPOINT = os.getenv('PROXY_ENDPOINT', 'proxy.scrapeops.io')
-PROXY_PORT = os.getenv('PROXY_PORT', '8000')
-
-
-# GOOGLE_DRIVE
-# GOOGLE_API_CREDENTIALS_FILE = os.getenv('GOOGLE_API_CREDENTIALS_FILE')
-
-# LOG_LEVEL = 'INFO'
-# LOG_FILE = './logs/system.log'
 
 # Crawl responsibly by identifying yourself (and your website) on the user-agent
 #USER_AGENT = "nhaccuatui_scraper (+http://www.yourdomain.com)"
 
 # Obey robots.txt rules
 ROBOTSTXT_OBEY = False
-
 # Configure maximum concurrent requests performed by Scrapy (default: 16)
-CONCURRENT_REQUESTS = 30
-
+CONCURRENT_REQUESTS = 20
 # Configure a delay for requests for the same website (default: 0)
 # See https://docs.scrapy.org/en/latest/topics/settings.html#download-delay
 # See also autothrottle settings and docs
 DOWNLOAD_DELAY = 0.5
+DOWNLOAD_TIMEOUT = 30
+NEXT_PAGE_LIMIT = 2
 # The download delay setting will honor only one of:
 #CONCURRENT_REQUESTS_PER_DOMAIN = 16
 #CONCURRENT_REQUESTS_PER_IP = 16
@@ -86,7 +82,6 @@ DEFAULT_REQUEST_HEADERS = {
 # See https://docs.scrapy.org/en/latest/topics/spider-middleware.html
 # SPIDER_MIDDLEWARES = {
 #    # "nhaccuatui_scraper.middlewares.NhaccuatuiScraperSpiderMiddleware": 543,
-#     "nhaccuatui_scraper.middlewares.GoogleDriveUploadMiddleware": 600,
 # }
 
 # Enable or disable downloader middlewares
@@ -95,14 +90,17 @@ DOWNLOADER_MIDDLEWARES = {
    # "nhaccuatui_scraper.middlewares.NhaccuatuiScraperDownloaderMiddleware": 543,
     "nhaccuatui_scraper.middlewares.ScrapeOpsFakeUserAgentMiddleware": 100,
     "nhaccuatui_scraper.middlewares.ScrapeOpsFakeBrowserHeaderAgentMiddleware": 200,
-    "nhaccuatui_scraper.middlewares.ScrapeOpsProxyMiddleware":300
-
+    "nhaccuatui_scraper.middlewares.ScrapeOpsProxyMiddleware":300,
+    'scrapeops_scrapy.middleware.retry.RetryMiddleware': 550,
+    'scrapeops_scrapy_proxy_sdk.scrapeops_scrapy_proxy_sdk.ScrapeOpsScrapyProxySdk': 725,
+    'scrapy.downloadermiddlewares.retry.RetryMiddleware': None,
 }
 
 # Enable or disable extensions
 # See https://docs.scrapy.org/en/latest/topics/extensions.html
 EXTENSIONS = {
     'scrapy_deltafetch.DeltaFetch': 100,
+    'scrapeops_scrapy.extension.ScrapeOpsMonitor': 500,
     # "scrapy.extensions.telnet.TelnetConsole": None,
 }
 
@@ -128,7 +126,7 @@ AUTOTHROTTLE_DEBUG = False
 
 # Enable and configure HTTP caching (disabled by default)
 # See https://docs.scrapy.org/en/latest/topics/downloader-middleware.html#httpcache-middleware-settings
-HTTPCACHE_ENABLED = True
+HTTPCACHE_ENABLED = False
 HTTPCACHE_EXPIRATION_SECS = 3000
 HTTPCACHE_DIR = "httpcache"
 #HTTPCACHE_IGNORE_HTTP_CODES = []
