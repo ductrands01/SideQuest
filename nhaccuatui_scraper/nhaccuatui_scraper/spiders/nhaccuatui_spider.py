@@ -19,18 +19,13 @@ class NhaccuatuiSpider(scrapy.Spider):
             yield scrapy.Request(category_url, callback=self.parse_category, errback=self.handle_error, meta={'page_count': 1})
 
     def parse_category(self, response):
-        # Extract song URLs
         song_urls = response.xpath('//div[@class="box-content-music-list"]//div[@class="info_song"]//a[@class="name_song"]/@href').getall()
         for song_url in song_urls:
             yield scrapy.Request(song_url, callback=self.parse_song, meta={
                 'category_name': response.xpath('//title/text()').get(),
                 'category_url': response.url
             }, errback=self.handle_error)
-
-        # Get current page count
         page_count = response.meta['page_count']
-
-        # Only follow next_page if page_count is less than the limit
         if page_count < self.limit:
             next_page = response.xpath('//a[@rel="next"]/@href').get()
             if next_page:
