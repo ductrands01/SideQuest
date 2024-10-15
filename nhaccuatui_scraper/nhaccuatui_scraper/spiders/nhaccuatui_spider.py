@@ -30,8 +30,8 @@ class NhaccuatuiSpider(scrapy.Spider):
         songitem['title'] = response.css('div.name_title h1[itemprop="name"]::text').get()
         songitem['authors'] = response.xpath('//*[@id="box_playing_id"]/div/div/h2/a/text()').getall()
         songitem['lyrics'] = response.xpath('//*[@id="divLyric"]/text() | //*[contains(@id, "divLyric")]/br').getall()
-        songitem['poster'] = response.xpath('//p[@class="name_post"]/a/@href').get()
-        songitem['poster_url'] = response.xpath('//p[@class="name_post"]/a/img/@src').get()
+        songitem['poster'] = response.xpath('//p[@class="name_post"]/a/text()').get()
+        songitem['poster_url'] = response.xpath('//p[@class="name_post"]/a/@href').get()
         yield songitem
 
     def handle_error(self, failure):

@@ -14,10 +14,8 @@ NEWSPIDER_MODULE = "nhaccuatui_scraper.spiders"
 
 
 # File output settings
-OUTPUT_FILE_FORMAT = "json"
+OUTPUT_FILE_FORMAT = "csv"
 OUTPUT_FILE_PATH = f'data/songs.{OUTPUT_FILE_FORMAT}'  # Local output file path based on format
-UPLOAD_FILE_NAME = f'songs.{OUTPUT_FILE_FORMAT}'  # Google Drive file name based on format
-DEBUG_OUTPUT_DIR = f'/app/debug_output'
 
 # Scrapy feed export settings
 FEED_FORMAT = OUTPUT_FILE_FORMAT
@@ -27,6 +25,7 @@ import os
 from dotenv import load_dotenv
 load_dotenv()
 
+# CLOSESPIDER_ITEMCOUNT = 5
 
 # MYSQL_SERVER
 MYSQL_HOST = os.getenv('MYSQL_HOST')
@@ -50,24 +49,24 @@ PROXY_PORT = os.getenv('PROXY_PORT', '8000')
 
 
 # GOOGLE_DRIVE
-GOOGLE_API_CREDENTIALS_FILE = os.getenv('GOOGLE_API_CREDENTIALS_FILE')
+# GOOGLE_API_CREDENTIALS_FILE = os.getenv('GOOGLE_API_CREDENTIALS_FILE')
 
-LOG_LEVEL = 'INFO'
-LOG_FILE = './logs/system.log'
+# LOG_LEVEL = 'INFO'
+# LOG_FILE = './logs/system.log'
 
 # Crawl responsibly by identifying yourself (and your website) on the user-agent
 #USER_AGENT = "nhaccuatui_scraper (+http://www.yourdomain.com)"
 
 # Obey robots.txt rules
-ROBOTSTXT_OBEY = True
+ROBOTSTXT_OBEY = False
 
 # Configure maximum concurrent requests performed by Scrapy (default: 16)
-#CONCURRENT_REQUESTS = 32
+CONCURRENT_REQUESTS = 30
 
 # Configure a delay for requests for the same website (default: 0)
 # See https://docs.scrapy.org/en/latest/topics/settings.html#download-delay
 # See also autothrottle settings and docs
-DOWNLOAD_DELAY = 3
+DOWNLOAD_DELAY = 0.5
 # The download delay setting will honor only one of:
 #CONCURRENT_REQUESTS_PER_DOMAIN = 16
 #CONCURRENT_REQUESTS_PER_IP = 16
@@ -92,26 +91,27 @@ DEFAULT_REQUEST_HEADERS = {
 
 # Enable or disable downloader middlewares
 # See https://docs.scrapy.org/en/latest/topics/downloader-middleware.html
-# DOWNLOADER_MIDDLEWARES = {
-#    # "nhaccuatui_scraper.middlewares.NhaccuatuiScraperDownloaderMiddleware": 543,
-#     "nhaccuatui_scraper.middlewares.ScrapeOpsFakeUserAgentMiddleware": 100,
-#     "nhaccuatui_scraper.middlewares.ScrapeOpsFakeBrowserHeaderAgentMiddleware": 200,
-#     "nhaccuatui_scraper.middlewares.ScrapeOpsProxyMiddleware":300
-#
-# }
+DOWNLOADER_MIDDLEWARES = {
+   # "nhaccuatui_scraper.middlewares.NhaccuatuiScraperDownloaderMiddleware": 543,
+    "nhaccuatui_scraper.middlewares.ScrapeOpsFakeUserAgentMiddleware": 100,
+    "nhaccuatui_scraper.middlewares.ScrapeOpsFakeBrowserHeaderAgentMiddleware": 200,
+    "nhaccuatui_scraper.middlewares.ScrapeOpsProxyMiddleware":300
+
+}
 
 # Enable or disable extensions
 # See https://docs.scrapy.org/en/latest/topics/extensions.html
-#EXTENSIONS = {
-#    "scrapy.extensions.telnet.TelnetConsole": None,
-#}
+EXTENSIONS = {
+    'scrapy_deltafetch.DeltaFetch': 100,
+    # "scrapy.extensions.telnet.TelnetConsole": None,
+}
 
 # Configure item pipelines
 # See https://docs.scrapy.org/en/latest/topics/item-pipeline.html
-# ITEM_PIPELINES = {
-#    # "nhaccuatui_scraper.pipelines.NhaccuatuiScraperPipeline": 300,
-#     'nhaccuatui_scraper.pipelines.MySQLPipeline': 400
-# }
+ITEM_PIPELINES = {
+   "nhaccuatui_scraper.pipelines.NhaccuatuiScraperPipeline": 300,
+    'nhaccuatui_scraper.pipelines.MySQLPipeline': 400
+}
 
 # Enable and configure the AutoThrottle extension (disabled by default)
 # See https://docs.scrapy.org/en/latest/topics/autothrottle.html
