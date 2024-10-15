@@ -14,7 +14,7 @@ SPIDER_MODULES = ["nhaccuatui_scraper.spiders"]
 NEWSPIDER_MODULE = "nhaccuatui_scraper.spiders"
 
 FEEDS = {
-    'data/songs1.csv': {
+    'data/songs.csv': {
         'format': 'csv',
         'encoding': 'utf8',
         'store_empty': False,
@@ -107,15 +107,15 @@ EXTENSIONS = {
 # Configure item pipelines
 # See https://docs.scrapy.org/en/latest/topics/item-pipeline.html
 ITEM_PIPELINES = {
-   "nhaccuatui_scraper.pipelines.NhaccuatuiScraperPipeline": 300,
-    'nhaccuatui_scraper.pipelines.MySQLPipeline': 400
+    "nhaccuatui_scraper.pipelines.NhaccuatuiScraperPipeline": 300,
+    # 'nhaccuatui_scraper.pipelines.MySQLPipeline': 400
 }
 
 # Enable and configure the AutoThrottle extension (disabled by default)
 # See https://docs.scrapy.org/en/latest/topics/autothrottle.html
 AUTOTHROTTLE_ENABLED = True
 # The initial download delay
-AUTOTHROTTLE_START_DELAY = 3
+# AUTOTHROTTLE_START_DELAY = 3
 # The maximum download delay to be set in case of high latencies
 AUTOTHROTTLE_MAX_DELAY = 30
 # The average number of requests Scrapy should be sending in parallel to
