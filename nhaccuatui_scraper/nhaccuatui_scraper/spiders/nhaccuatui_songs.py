@@ -10,10 +10,20 @@ class NhaccuatuiSongsSpider(scrapy.Spider):
         super(NhaccuatuiSongsSpider, self).__init__(*args, **kwargs)
         settings = get_project_settings()
         self.limit = settings.get('NEXT_PAGE_LIMIT', 3)
+        self.category_url = settings.get('CATEGORY_URL', None)
+
 
     def start_requests(self):
+        if self.category_url:
+            yield scrapy.Request(
+                url=self.category_url,
+                callback=self.parse_category,
+                meta={'page_count': 1, 'category_name': 'Custom Category'}
+            )
+            return
+
         try:
-            df = pd.read_csv('categories.csv')
+            df = pd.read_csv('data/categories.csv')
         except FileNotFoundError:
             self.logger.error("File 'categories.csv' not found.")
             return
@@ -32,7 +42,7 @@ class NhaccuatuiSongsSpider(scrapy.Spider):
                 self.logger.warning(f"Skipping category due to missing 'url' or 'name': {row}")
 
     def parse_category(self, response):
-        song_urls = response.xpath('//div[@class="info_song"]/a[@class="name_song"]/@href').getall()
+        song_urls = response.xpath('//div[@class="info_song"]/a/@href').getall()
         for song_url in song_urls:
             yield scrapy.Request(
                 url=response.urljoin(song_url),

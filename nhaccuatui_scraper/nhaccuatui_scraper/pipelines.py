@@ -7,12 +7,17 @@
 # useful for handling different item types with a single interface
 from itemadapter import ItemAdapter
 
+import re
+
 
 class NhaccuatuiScraperPipeline:
     def process_item(self, item, spider):
         if 'lyrics' in item:
-            lyrics_cleaned = [element.strip() for element in item['lyrics'] if isinstance(element, str)]
-            item['lyrics'] = '\n'.join(lyrics_cleaned).strip()
+            lyrics_raw = ''.join(item['lyrics'])
+            lyrics_cleaned = re.sub(r'<[^>]+>', '', lyrics_raw)
+            lyrics_cleaned = re.sub(r'\s+', ' ', lyrics_cleaned).strip()
+            lyrics_cleaned = lyrics_cleaned.replace('\n', ' ').replace('\r', '').strip()
+            item['lyrics'] = lyrics_cleaned
         return item
 
 
@@ -30,7 +35,7 @@ class MySQLPipeline:
             user=spider.settings.get('MYSQL_USER'),
             password=spider.settings.get('MYSQL_PASSWORD'),
             db=spider.settings.get('MYSQL_DATABASE'),
-            charset='utf8mb4',  # Supports extended characters
+            charset='utf8mb4',
             cursorclass=pymysql.cursors.DictCursor
         )
         self.cursor = self.connection.cursor()
@@ -50,10 +55,8 @@ class MySQLPipeline:
         create_table_query = """
         CREATE TABLE IF NOT EXISTS songs (
             id INT AUTO_INCREMENT PRIMARY KEY,
-            category_name VARCHAR(255),
-            category_url TEXT,
-            song_url TEXT,
-            title VARCHAR(255),
+            url TEXT,
+            name VARCHAR(255),
             authors TEXT,
             lyrics TEXT,
             poster TEXT,
@@ -71,14 +74,12 @@ class MySQLPipeline:
         """
         try:
             insert_query = """
-            INSERT INTO songs (category_name, category_url, song_url, title, authors, lyrics, poster, poster_url)
-            VALUES (%s, %s, %s, %s, %s, %s, %s, %s)
+            INSERT INTO songs (url, name, authors, lyrics, poster, poster_url)
+            VALUES (%s, %s, %s, %s, %s, %s)
             """
             self.cursor.execute(insert_query, (
-                item.get('category_name'),
-                item.get('category_url'),
-                item.get('song_url'),
-                item.get('title'),
+                item.get('url'),
+                item.get('name'),
                 ', '.join(item.get('authors', [])),
                 item.get('lyrics'),
                 item.get('poster'),

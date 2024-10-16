@@ -5,7 +5,7 @@ from ..items import NhaccuatuiCategory
 class NhaccuatuiCategoriesSpider(scrapy.Spider):
     name = 'nhaccuatui_categories'
     start_urls = [
-        'https://www.nhaccuatui.com/playlist/bai-hat-moi.html',
+        'https://www.nhaccuatui.com/bai-hat/bai-hat-moi.html',
     ]
 
     def parse(self, response):
