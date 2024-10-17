@@ -25,13 +25,16 @@ FEEDS = {
         },
     }
 }
-CATEGORY_URL = 'https://www.nhaccuatui.com/bai-hat/rap-viet-moi.html'
+
+
+# CATEGORY_URL = 'https://www.nhaccuatui.com/bai-hat/rbhip-hoprap-moi.html'
+NEXT_PAGE_LIMIT = 5
+
 
 import os
 from dotenv import load_dotenv
 load_dotenv()
 
-CLOSESPIDER_ITEMCOUNT = 100
 
 # MYSQL_SERVER
 MYSQL_HOST = os.getenv('MYSQL_HOST')
@@ -44,10 +47,12 @@ SCRAPEOPS_API_KEY = os.getenv('SCRAPEOPS_API_KEY')
 SCRAPEOPS_FAKE_USER_AGENT_ENDPOINT = 'http://headers.scrapeops.io/v1/user-agents'
 SCRAPEOPS_FAKE_BROWSER_HEADER_ENDPOINT = 'http://headers.scrapeops.io/v1/browser-headers'
 SCRAPEOPS_PROXY_ENDPOINT = 'https://proxy.scrapeops.io/v1/?'
-SCRAPEOPS_FAKE_USER_AGENT_ENABLED = True
-SCRAPEOPS_FAKE_BROWSER_HEADER_ENABLED = True
-SCRAPEOPS_PROXY_ENABLED = True
+SCRAPEOPS_FAKE_USER_AGENT_ENABLED = False
+SCRAPEOPS_FAKE_BROWSER_HEADER_ENABLED = False
+SCRAPEOPS_PROXY_ENABLED = False
 SCRAPEOPS_NUM_RESULTS = 5
+
+# CLOSESPIDER_ITEMCOUNT = 100
 
 
 # Crawl responsibly by identifying yourself (and your website) on the user-agent
@@ -56,13 +61,15 @@ SCRAPEOPS_NUM_RESULTS = 5
 # Obey robots.txt rules
 ROBOTSTXT_OBEY = False
 # Configure maximum concurrent requests performed by Scrapy (default: 16)
-CONCURRENT_REQUESTS = 30
+CONCURRENT_REQUESTS = 20
 # Configure a delay for requests for the same website (default: 0)
 # See https://docs.scrapy.org/en/latest/topics/settings.html#download-delay
 # See also autothrottle settings and docs
-DOWNLOAD_DELAY = 0.5
+DOWNLOAD_DELAY = 0.55
 DOWNLOAD_TIMEOUT = 3000
-NEXT_PAGE_LIMIT = 2
+
+
+
 # The download delay setting will honor only one of:
 #CONCURRENT_REQUESTS_PER_DOMAIN = 16
 #CONCURRENT_REQUESTS_PER_IP = 16
@@ -86,21 +93,21 @@ DEFAULT_REQUEST_HEADERS = {
 
 # Enable or disable downloader middlewares
 # See https://docs.scrapy.org/en/latest/topics/downloader-middleware.html
-DOWNLOADER_MIDDLEWARES = {
-   "nhaccuatui_scraper.middlewares.NhaccuatuiScraperDownloaderMiddleware": 543,
-    "nhaccuatui_scraper.middlewares.ScrapeOpsFakeUserAgentMiddleware": 100,
-    "nhaccuatui_scraper.middlewares.ScrapeOpsFakeBrowserHeaderAgentMiddleware": 200,
-    "nhaccuatui_scraper.middlewares.ScrapeOpsProxyMiddleware":300,
-    'scrapeops_scrapy.middleware.retry.RetryMiddleware': 550,
-    'scrapeops_scrapy_proxy_sdk.scrapeops_scrapy_proxy_sdk.ScrapeOpsScrapyProxySdk': 725,
-    'scrapy.downloadermiddlewares.retry.RetryMiddleware': None,
-}
+# DOWNLOADER_MIDDLEWARES = {
+#    # "nhaccuatui_scraper.middlewares.NhaccuatuiScraperDownloaderMiddleware": 543,
+#     "nhaccuatui_scraper.middlewares.ScrapeOpsFakeUserAgentMiddleware": 100,
+#     "nhaccuatui_scraper.middlewares.ScrapeOpsFakeBrowserHeaderAgentMiddleware": 200,
+#     "nhaccuatui_scraper.middlewares.ScrapeOpsProxyMiddleware":300,
+#     'scrapeops_scrapy.middleware.retry.RetryMiddleware': 550,
+#     'scrapeops_scrapy_proxy_sdk.scrapeops_scrapy_proxy_sdk.ScrapeOpsScrapyProxySdk': 725,
+#     'scrapy.downloadermiddlewares.retry.RetryMiddleware': None,
+# }
 
 # Enable or disable extensions
 # See https://docs.scrapy.org/en/latest/topics/extensions.html
 EXTENSIONS = {
     'scrapy_deltafetch.DeltaFetch': 100,
-    'scrapeops_scrapy.extension.ScrapeOpsMonitor': 500,
+    # 'scrapeops_scrapy.extension.ScrapeOpsMonitor': 500,
     # "scrapy.extensions.telnet.TelnetConsole": None,
 }
 
@@ -115,7 +122,7 @@ ITEM_PIPELINES = {
 # See https://docs.scrapy.org/en/latest/topics/autothrottle.html
 AUTOTHROTTLE_ENABLED = True
 # The initial download delay
-# AUTOTHROTTLE_START_DELAY = 3
+AUTOTHROTTLE_START_DELAY = 3
 # The maximum download delay to be set in case of high latencies
 AUTOTHROTTLE_MAX_DELAY = 30
 # The average number of requests Scrapy should be sending in parallel to

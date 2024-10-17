@@ -13,6 +13,7 @@ class NhaccuatuiSong(scrapy.Item):
     lyrics = scrapy.Field()
     poster = scrapy.Field()
     poster_url = scrapy.Field()
+    category_name = scrapy.Field()
 
 class NhaccuatuiCategory(scrapy.Item):
     url = scrapy.Field()

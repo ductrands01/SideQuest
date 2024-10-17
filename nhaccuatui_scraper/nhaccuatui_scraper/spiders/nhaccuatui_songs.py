@@ -12,13 +12,12 @@ class NhaccuatuiSongsSpider(scrapy.Spider):
         self.limit = settings.get('NEXT_PAGE_LIMIT', 3)
         self.category_url = settings.get('CATEGORY_URL', None)
 
-
     def start_requests(self):
         if self.category_url:
             yield scrapy.Request(
                 url=self.category_url,
                 callback=self.parse_category,
-                meta={'page_count': 1, 'category_name': 'Custom Category'}
+                meta={'page_count': 1, 'category_name': 'R&B/Hip Hop/Rap'}
             )
             return
 
@@ -67,7 +66,8 @@ class NhaccuatuiSongsSpider(scrapy.Spider):
             authors=response.xpath('//*[@id="box_playing_id"]/div/div/h2/a/text()').getall(),
             lyrics=response.xpath('//*[@id="divLyric"]/text() | //*[contains(@id, "divLyric")]/br').getall(),
             poster=response.xpath('//p[@class="name_post"]/a/text()').get(),
-            poster_url=response.xpath('//p[@class="name_post"]/a/@href').get()
+            poster_url=response.xpath('//p[@class="name_post"]/a/@href').get(),
+            category_name=response.meta['category_name']
         )
         yield song_item
 

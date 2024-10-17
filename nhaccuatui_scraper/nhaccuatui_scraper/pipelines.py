@@ -61,6 +61,7 @@ class MySQLPipeline:
             lyrics TEXT,
             poster TEXT,
             poster_url TEXT,
+            category_name VARCHAR(255),
             created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
         ) CHARSET=utf8mb4;
         """
@@ -74,8 +75,8 @@ class MySQLPipeline:
         """
         try:
             insert_query = """
-            INSERT INTO songs (url, name, authors, lyrics, poster, poster_url)
-            VALUES (%s, %s, %s, %s, %s, %s)
+            INSERT INTO songs (url, name, authors, lyrics, poster, poster_url, category_name)
+            VALUES (%s, %s, %s, %s, %s, %s, %s)
             """
             self.cursor.execute(insert_query, (
                 item.get('url'),
@@ -83,7 +84,8 @@ class MySQLPipeline:
                 ', '.join(item.get('authors', [])),
                 item.get('lyrics'),
                 item.get('poster'),
-                item.get('poster_url')
+                item.get('poster_url'),
+                item.get('category_name')
             ))
             self.connection.commit()
         except pymysql.MySQLError as e:

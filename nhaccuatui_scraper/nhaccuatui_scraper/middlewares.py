@@ -103,7 +103,6 @@ class NhaccuatuiScraperDownloaderMiddleware:
         spider.logger.info("Spider opened: %s" % spider.name)
 
 
-from urllib.parse import urlencode
 from random import randint
 import requests
 
@@ -146,7 +145,7 @@ class ScrapeOpsFakeUserAgentMiddleware:
         random_user_agent = self._get_random_user_agent()
         request.headers['User-Agent'] = random_user_agent
 
-        print("************ NEW HEADER ATTACHED *******")
+        print("************ NEW USER AGENT ATTACHED *******")
         print(request.headers['User-Agent'])
 
 
@@ -184,22 +183,21 @@ class ScrapeOpsFakeBrowserHeaderAgentMiddleware:
         else:
             self.scrapeops_fake_browser_headers_active = True
 
-def process_request(self, request, spider):
-    random_browser_header = self._get_random_browser_header()
+    def process_request(self, request, spider):
+        random_browser_header = self._get_random_browser_header()
+        request.headers['accept-language'] = random_browser_header.get('accept-language', 'en-US,en;q=0.9')
+        request.headers['sec-fetch-user'] = random_browser_header.get('sec-fetch-user', '?1')
+        request.headers['sec-fetch-mod'] = random_browser_header.get('sec-fetch-mod', 'navigate')
+        request.headers['sec-fetch-site'] = random_browser_header.get('sec-fetch-site', 'same-origin')
+        request.headers['sec-ch-ua-platform'] = random_browser_header.get('sec-ch-ua-platform', '"Windows"')
+        request.headers['sec-ch-ua-mobile'] = random_browser_header.get('sec-ch-ua-mobile', '?0')
+        request.headers['sec-ch-ua'] = random_browser_header.get('sec-ch-ua', '"Chromium";v="99", "Google Chrome";v="99", "Not A;Brand";v="99"')
+        request.headers['accept'] = random_browser_header.get('accept', 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8')
+        request.headers['user-agent'] = random_browser_header.get('user-agent', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/99.0.4844.51 Safari/537.36')
+        request.headers['upgrade-insecure-requests'] = random_browser_header.get('upgrade-insecure-requests', '1')
 
-    request.headers['accept-language'] = random_browser_header.get('accept-language', 'en-US,en;q=0.9')
-    request.headers['sec-fetch-user'] = random_browser_header.get('sec-fetch-user', '?1')
-    request.headers['sec-fetch-mod'] = random_browser_header.get('sec-fetch-mod', 'navigate')
-    request.headers['sec-fetch-site'] = random_browser_header.get('sec-fetch-site', 'same-origin')
-    request.headers['sec-ch-ua-platform'] = random_browser_header.get('sec-ch-ua-platform', '"Windows"')
-    request.headers['sec-ch-ua-mobile'] = random_browser_header.get('sec-ch-ua-mobile', '?0')
-    request.headers['sec-ch-ua'] = random_browser_header.get('sec-ch-ua', '"Chromium";v="99", "Google Chrome";v="99", "Not A;Brand";v="99"')
-    request.headers['accept'] = random_browser_header.get('accept', 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8')
-    request.headers['user-agent'] = random_browser_header.get('user-agent', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/99.0.4844.51 Safari/537.36')
-    request.headers['upgrade-insecure-requests'] = random_browser_header.get('upgrade-insecure-requests', '1')
-
-    print("************ NEW HEADER ATTACHED *******")
-    print(request.headers)
+        print("************ NEW HEADER ATTACHED *******")
+        print(request.headers)
 
 
 import base64
@@ -228,5 +226,5 @@ class ScrapeOpsProxyMiddleware:
     def process_request(self, request, spider):
         if self.scrapeops_proxy_active:
             scrapeops_url = self._get_scrapeops_url(request)
-            request = request.replace(cls=Request, url=scrapeops_url, meta=request.meta)
+            request.replace(cls=Request, url=scrapeops_url, meta=request.meta)
 
