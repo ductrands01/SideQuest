@@ -149,7 +149,7 @@ class ScrapeOpsFakeUserAgentMiddleware:
         print(request.headers['User-Agent'])
 
 
-class ScrapeOpsFakeBrowserHeaderAgentMiddleware:
+class ScrapeOpsFakeBrowserHeaderMiddleware:
 
     @classmethod
     def from_crawler(cls, crawler):

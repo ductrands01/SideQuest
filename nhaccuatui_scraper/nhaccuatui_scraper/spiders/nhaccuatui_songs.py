@@ -17,7 +17,7 @@ class NhaccuatuiSongsSpider(scrapy.Spider):
             yield scrapy.Request(
                 url=self.category_url,
                 callback=self.parse_category,
-                meta={'page_count': 1, 'category_name': 'R&B/Hip Hop/Rap'}
+                meta={'page_count': 1, 'category_name': 'Nhạc Trẻ'}
             )
             return
 

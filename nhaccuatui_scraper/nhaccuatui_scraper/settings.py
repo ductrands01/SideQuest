@@ -26,10 +26,8 @@ FEEDS = {
     }
 }
 
-
-# CATEGORY_URL = 'https://www.nhaccuatui.com/bai-hat/rbhip-hoprap-moi.html'
-NEXT_PAGE_LIMIT = 5
-
+# CATEGORY_URL = 'https://www.nhaccuatui.com/bai-hat/nhac-tre-moi.7.html'
+NEXT_PAGE_LIMIT = 100000000000000000000000
 
 import os
 from dotenv import load_dotenv
@@ -93,15 +91,15 @@ DEFAULT_REQUEST_HEADERS = {
 
 # Enable or disable downloader middlewares
 # See https://docs.scrapy.org/en/latest/topics/downloader-middleware.html
-# DOWNLOADER_MIDDLEWARES = {
-#    # "nhaccuatui_scraper.middlewares.NhaccuatuiScraperDownloaderMiddleware": 543,
-#     "nhaccuatui_scraper.middlewares.ScrapeOpsFakeUserAgentMiddleware": 100,
-#     "nhaccuatui_scraper.middlewares.ScrapeOpsFakeBrowserHeaderAgentMiddleware": 200,
-#     "nhaccuatui_scraper.middlewares.ScrapeOpsProxyMiddleware":300,
-#     'scrapeops_scrapy.middleware.retry.RetryMiddleware': 550,
-#     'scrapeops_scrapy_proxy_sdk.scrapeops_scrapy_proxy_sdk.ScrapeOpsScrapyProxySdk': 725,
-#     'scrapy.downloadermiddlewares.retry.RetryMiddleware': None,
-# }
+DOWNLOADER_MIDDLEWARES = {
+   # "nhaccuatui_scraper.middlewares.NhaccuatuiScraperDownloaderMiddleware": 543,
+    "nhaccuatui_scraper.middlewares.ScrapeOpsFakeUserAgentMiddleware": 100,
+    "nhaccuatui_scraper.middlewares.ScrapeOpsFakeBrowserHeaderMiddleware": 200,
+    "nhaccuatui_scraper.middlewares.ScrapeOpsProxyMiddleware":300,
+    'scrapeops_scrapy.middleware.retry.RetryMiddleware': 550,
+    'scrapeops_scrapy_proxy_sdk.scrapeops_scrapy_proxy_sdk.ScrapeOpsScrapyProxySdk': 725,
+    'scrapy.downloadermiddlewares.retry.RetryMiddleware': None,
+}
 
 # Enable or disable extensions
 # See https://docs.scrapy.org/en/latest/topics/extensions.html
