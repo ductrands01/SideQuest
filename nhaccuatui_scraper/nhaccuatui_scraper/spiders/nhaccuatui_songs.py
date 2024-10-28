@@ -1,5 +1,6 @@
 import pandas as pd
 import scrapy
+import time
 from ..items import NhaccuatuiSong
 from scrapy.utils.project import get_project_settings
 
@@ -11,6 +12,7 @@ class NhaccuatuiSongsSpider(scrapy.Spider):
         settings = get_project_settings()
         self.limit = settings.get('NEXT_PAGE_LIMIT', 3)
         self.category_url = settings.get('CATEGORY_URL', None)
+        self.start_time = time.time()
 
     def start_requests(self):
         if self.category_url:
@@ -60,6 +62,7 @@ class NhaccuatuiSongsSpider(scrapy.Spider):
                 )
 
     def parse_song(self, response):
+        request_start_time = time.time()
         song_item = NhaccuatuiSong(
             url=response.url,
             name=response.css('div.name_title h1[itemprop="name"]::text').get(),
@@ -69,7 +72,15 @@ class NhaccuatuiSongsSpider(scrapy.Spider):
             poster_url=response.xpath('//p[@class="name_post"]/a/@href').get(),
             category_name=response.meta['category_name']
         )
+        request_duration = time.time() - request_start_time
+        self.logger.info(f"Time taken to scrape song {song_item['name']}: {request_duration:.2f} seconds")
         yield song_item
 
     def handle_error(self, failure):
         self.logger.error(f"Request failed: {failure.request.url}, Error: {repr(failure)}")
+
+    def closed(self, reason):
+        total_duration = time.time() - self.start_time
+        self.logger.info(f"Spider closed: {reason}. Total duration: {total_duration:.2f} seconds")
+        self.logger.info(f"Spider closed: {reason}. Total duration: {total_duration / 60:.2f} minutes")
+        self.logger.info(f"Spider closed: {reason}. Total duration: {total_duration / (60 * 60):.2f} hours")

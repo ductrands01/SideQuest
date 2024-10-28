@@ -59,12 +59,12 @@ SCRAPEOPS_NUM_RESULTS = 5
 # Obey robots.txt rules
 ROBOTSTXT_OBEY = False
 # Configure maximum concurrent requests performed by Scrapy (default: 16)
-CONCURRENT_REQUESTS = 20
+CONCURRENT_REQUESTS = 26
 # Configure a delay for requests for the same website (default: 0)
 # See https://docs.scrapy.org/en/latest/topics/settings.html#download-delay
 # See also autothrottle settings and docs
-DOWNLOAD_DELAY = 0.55
-DOWNLOAD_TIMEOUT = 3000
+#DOWNLOAD_DELAY = 0.55
+DOWNLOAD_TIMEOUT = 30000
 
 
 
@@ -93,12 +93,12 @@ DEFAULT_REQUEST_HEADERS = {
 # See https://docs.scrapy.org/en/latest/topics/downloader-middleware.html
 DOWNLOADER_MIDDLEWARES = {
    # "nhaccuatui_scraper.middlewares.NhaccuatuiScraperDownloaderMiddleware": 543,
-    "nhaccuatui_scraper.middlewares.ScrapeOpsFakeUserAgentMiddleware": 100,
-    "nhaccuatui_scraper.middlewares.ScrapeOpsFakeBrowserHeaderMiddleware": 200,
-    "nhaccuatui_scraper.middlewares.ScrapeOpsProxyMiddleware":300,
-    'scrapeops_scrapy.middleware.retry.RetryMiddleware': 550,
-    'scrapeops_scrapy_proxy_sdk.scrapeops_scrapy_proxy_sdk.ScrapeOpsScrapyProxySdk': 725,
-    'scrapy.downloadermiddlewares.retry.RetryMiddleware': None,
+   #  "nhaccuatui_scraper.middlewares.ScrapeOpsFakeUserAgentMiddleware": 100,
+   #  "nhaccuatui_scraper.middlewares.ScrapeOpsFakeBrowserHeaderMiddleware": 200,
+   #  "nhaccuatui_scraper.middlewares.ScrapeOpsProxyMiddleware":300,
+   #  'scrapeops_scrapy.middleware.retry.RetryMiddleware': 550,
+   #  'scrapeops_scrapy_proxy_sdk.scrapeops_scrapy_proxy_sdk.ScrapeOpsScrapyProxySdk': 725,
+   #  'scrapy.downloadermiddlewares.retry.RetryMiddleware': None,
 }
 
 # Enable or disable extensions
