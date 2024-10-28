@@ -16,7 +16,7 @@ A Scrapy project to scrape song and category information from the [NhacCuaTui](h
 - [Scraped Items](#scraped-items)
 - [Middlewares](#middlewares)
 - [Item Pipelines](#item-pipelines)
-- [Contributing](#contributing)
+- [Data Scraped](#data-scraped)
 - [License](#license)
 - [Acknowledgments](#acknowledgments)
 
@@ -38,9 +38,15 @@ nhaccuatui_scraper/
 │   ├── settings.py                    # Scrapy settings configuration
 │   └── scrapy.cfg                     # Scrapy project configuration
 │
+├── data/
+│   ├── categories.csv                 # CSV of scraped categories
+│   ├── songs.csv                      # CSV of scraped songs
+│   └── nhaccuatui_db.sql              # SQL dump for database storage
+│
 ├── requirements.txt                   # Python dependencies
 ├── README.md                          # Project documentation
 └── .env                               # Environment variables
+
 ```
 
 ## Features
@@ -176,6 +182,12 @@ ITEM_PIPELINES = {
 }
 ```
 
+## Data Scraped
+Scraped data can be found in the nhaccuatui_scraper/data directory, including:
+
+- **categories.csv**: Contains category (genre) information.
+- **songs.csv**: Stores information about individual songs.
+- **nhaccuatui_db.sql**: SQL file to recreate the database structure and data.
 
 ## Acknowledgments
 
